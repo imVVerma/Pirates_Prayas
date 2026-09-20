@@ -1,0 +1,24 @@
+M5a — ASHA assignment and care-phase state machine
+
+Result: PASS
+
+13/13 M5a tests passed.
+
+Covered:
+- pre-diagnosis navigation after diagnostic referral
+- pre-diagnosis navigation after explicit additional-test request
+- rejection without human referral/request
+- ASHA self-assignment rejection
+- diagnosis alone does not enable treatment support
+- confirmed treatment-plan requirement
+- actual treatment-initiation requirement
+- complete treatment-support assignment flow
+- assignment cannot predate treatment initiation
+- revision/case-status invariants
+- duplicate assignment rejection
+- stale revision rejection
+- treatment support restricted to clinician
+
+No M0 schema changes.
+No UI changes.
+No model work.

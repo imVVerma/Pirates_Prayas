@@ -1,0 +1,56 @@
+{
+  "case_id": "demo-case-0001",
+  "created_at": "2026-09-20T00:00:00Z",
+  "status": "intake",
+  "patient": {
+    "demographics": {
+      "age": 35,
+      "sex": "male",
+      "location": "synthetic-demo-village"
+    }
+  },
+  "symptom_screen": {
+    "cough_duration_days": 17,
+    "fever": true,
+    "night_sweats": false,
+    "weight_loss": false,
+    "source": "text",
+    "raw_transcript": null,
+    "structured_at": "2026-09-20T00:00:00Z"
+  },
+  "xray": {
+    "available": false,
+    "image_ref": null,
+    "model_flag": null,
+    "model_confidence": null,
+    "heatmap_ref": null,
+    "captured_at": null
+  },
+  "esr": {
+    "available": false,
+    "value": null,
+    "flag": null,
+    "captured_at": null
+  },
+  "case_summary": {
+    "brief_text": null,
+    "generated_at": null
+  },
+  "verifier_decision": {
+    "reviewer_id": null,
+    "decision": null,
+    "notes": null,
+    "decided_at": null
+  },
+  "routing": {
+    "confirmatory_test_site": null,
+    "distance_or_eta": null,
+    "routed_at": null
+  },
+  "asha_assignment": {
+    "asha_id": null,
+    "assigned_at": null,
+    "medicine_pickup_log": []
+  },
+  "followups": []
+}

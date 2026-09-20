@@ -1,0 +1,90 @@
+{
+  "case_id": "7b7d2b52-5b5d-4f24-9e8c-1e4f6e8d5f10",
+  "revision": 14,
+  "current_stage": "treatment_follow_up",
+  "case_status": "diagnosed",
+  "patient": {
+    "patient_ref": "DEMO-PATIENT-001",
+    "age": 35,
+    "sex": "female",
+    "location": "DEMO-AREA-A"
+  },
+  "screening": {
+    "xray": {
+      "available": true,
+      "flag": "abnormal",
+      "confidence": 0.9847,
+      "model_id": "demo-h5-sha256-raw-0-255",
+      "captured_at": "2026-09-20T05:00:00+05:30"
+    },
+    "esr": {
+      "available": true,
+      "value": 42,
+      "flag": "elevated",
+      "reference_range_used": "synthetic reported reference 0-22 mm/h",
+      "captured_at": "2026-09-20T05:01:00+05:30"
+    }
+  },
+  "diagnostics": {
+    "tests": [
+      {
+        "test_id": "55555555-5555-4555-8555-555555555555",
+        "test_type": "xpert_mtb_rif",
+        "result": "positive",
+        "lab_id": "DEMO-LAB-01",
+        "specimen_ref": "SYN-SPEC-001",
+        "collected_at": "2026-09-20T05:25:00+05:30",
+        "result_at": "2026-09-20T05:40:00+05:30"
+      }
+    ],
+    "routes": [
+      {
+        "route_id": "33333333-3333-4333-8333-333333333333",
+        "purpose": "additional_screening",
+        "site_id": "DEMO-SCREEN-01",
+        "status": "completed",
+        "routed_at": "2026-09-20T05:04:00+05:30"
+      },
+      {
+        "route_id": "44444444-4444-4444-8444-444444444444",
+        "purpose": "diagnostic_testing",
+        "site_id": "DEMO-LAB-01",
+        "status": "completed",
+        "routed_at": "2026-09-20T05:21:00+05:30"
+      }
+    ]
+  },
+  "diagnosis": {
+    "status": "clinician_confirmed",
+    "classification": "bacteriologically_confirmed",
+    "diagnosed_at": "2026-09-20T05:50:00+05:30"
+  },
+  "treatment": {
+    "plan_confirmed": true,
+    "started_at": "2026-09-20T06:00:00+05:30"
+  },
+  "asha": {
+    "assigned": true,
+    "asha_id": "demo-asha-01",
+    "support_phase": "treatment_support",
+    "assigned_at": "2026-09-20T06:05:00+05:30",
+    "next_action": {
+      "type": "medicine_pickup",
+      "label": "Medicine pickup",
+      "due": "2026-09-24"
+    },
+    "latest_pickup": {
+      "scheduled_date": "2026-09-24",
+      "status": "scheduled",
+      "logged_at": null
+    }
+  },
+  "alerts": [
+    {
+      "type": "missed_pickup",
+      "severity": "attention",
+      "label": "Previous medicine pickup missed"
+    }
+  ],
+  "history_count": 10
+}

@@ -1,0 +1,865 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/rural-tb/case-schema-1.0.0.json",
+  "title": "Rural TB Detection and Continuity \u2014 clinical case snapshot (M0)",
+  "description": "Demo-only contract. Clinical case_status is independent of device-local sync_status; screening does not establish diagnosis.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "case_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "case_status": {
+      "enum": [
+        "intake",
+        "ready_for_review",
+        "pending_additional_test",
+        "routed_for_diagnostics",
+        "diagnostic_result_available",
+        "diagnosed",
+        "closed"
+      ]
+    },
+    "patient": {
+      "type": "object",
+      "properties": {
+        "demographics": {
+          "type": "object",
+          "properties": {
+            "age": {
+              "type": "integer",
+              "minimum": 18
+            },
+            "sex": {
+              "type": "string",
+              "enum": [
+                "female",
+                "male",
+                "other",
+                "not_recorded"
+              ]
+            },
+            "location": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "age",
+            "sex",
+            "location"
+          ],
+          "additionalProperties": false
+        },
+        "patient_ref": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Pseudonymous stable patient identifier; keep identifiable contact data in separate protected registry."
+        }
+      },
+      "required": [
+        "demographics",
+        "patient_ref"
+      ],
+      "additionalProperties": false
+    },
+    "consent": {
+      "type": "object",
+      "properties": {
+        "data_collection": {
+          "const": true
+        },
+        "share_with_verifier": {
+          "const": true
+        },
+        "audio_recording": {
+          "type": "boolean"
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "data_collection",
+        "share_with_verifier",
+        "audio_recording",
+        "recorded_at"
+      ],
+      "additionalProperties": false
+    },
+    "symptom_screen": {
+      "type": "object",
+      "properties": {
+        "cough_present": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "cough_duration_days": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "fever": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "night_sweats": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "weight_loss": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "text",
+            "voice"
+          ]
+        },
+        "raw_transcript": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "structured_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "cough_present",
+        "cough_duration_days",
+        "fever",
+        "night_sweats",
+        "weight_loss",
+        "source",
+        "raw_transcript",
+        "structured_at"
+      ],
+      "additionalProperties": false
+    },
+    "xray": {
+      "type": "object",
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "image_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "model_flag": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "abnormal",
+                "normal"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "model_confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "heatmap_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "model_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "captured_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "available",
+        "image_ref",
+        "model_flag",
+        "model_confidence",
+        "heatmap_ref",
+        "model_id",
+        "captured_at"
+      ],
+      "additionalProperties": false
+    },
+    "esr": {
+      "type": "object",
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "flag": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "normal",
+                "elevated",
+                "markedly_elevated"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reference_range_used": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "captured_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "available",
+        "value",
+        "flag",
+        "reference_range_used",
+        "captured_at"
+      ],
+      "additionalProperties": false
+    },
+    "case_summary": {
+      "type": "object",
+      "properties": {
+        "brief_text": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "generated_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "brief_text",
+        "generated_at"
+      ],
+      "additionalProperties": false
+    },
+    "review_history": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/review"
+      }
+    },
+    "routes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/route"
+      }
+    },
+    "diagnostic_tests": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/test"
+      }
+    },
+    "diagnosis": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/diagnosis"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "asha_assignment": {
+      "type": "object",
+      "properties": {
+        "asha_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assigned_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "support_phase": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "pre_diagnosis_navigation",
+                "treatment_support"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "medicine_pickup_log": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pickup"
+          }
+        }
+      },
+      "required": [
+        "asha_id",
+        "assigned_at",
+        "support_phase",
+        "medicine_pickup_log"
+      ],
+      "additionalProperties": false
+    },
+    "followups": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/followup"
+      }
+    },
+    "status_history": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/transition"
+      }
+    }
+  },
+  "$defs": {
+    "actor_role": {
+      "enum": [
+        "pharmacist",
+        "verifier",
+        "clinician",
+        "lab",
+        "asha",
+        "system"
+      ]
+    },
+    "state": {
+      "enum": [
+        "intake",
+        "ready_for_review",
+        "pending_additional_test",
+        "routed_for_diagnostics",
+        "diagnostic_result_available",
+        "diagnosed",
+        "closed"
+      ]
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "review_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "reviewer_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewer_role": {
+          "type": "string",
+          "enum": [
+            "verifier",
+            "clinician"
+          ]
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "intervention_required",
+            "not_required",
+            "more_tests_needed"
+          ]
+        },
+        "requested_tests": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "xray",
+              "esr"
+            ]
+          }
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "decided_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "review_id",
+        "reviewer_id",
+        "reviewer_role",
+        "decision",
+        "requested_tests",
+        "notes",
+        "decided_at"
+      ],
+      "additionalProperties": false
+    },
+    "route": {
+      "type": "object",
+      "properties": {
+        "route_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "purpose": {
+          "type": "string",
+          "enum": [
+            "additional_screening",
+            "diagnostic_testing"
+          ]
+        },
+        "site_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "planned",
+            "completed",
+            "cancelled"
+          ]
+        },
+        "routed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "route_id",
+        "purpose",
+        "site_id",
+        "status",
+        "routed_at"
+      ],
+      "additionalProperties": false
+    },
+    "test": {
+      "type": "object",
+      "properties": {
+        "test_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "test_type": {
+          "type": "string",
+          "enum": [
+            "xpert_mtb_rif",
+            "xpert_ultra",
+            "truenat",
+            "culture",
+            "smear_microscopy",
+            "other_who_recommended_rapid_test"
+          ]
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "positive",
+            "negative",
+            "indeterminate"
+          ]
+        },
+        "lab_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "specimen_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "collected_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "result_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test_id",
+        "test_type",
+        "result",
+        "lab_id",
+        "specimen_ref",
+        "collected_at",
+        "result_at"
+      ],
+      "additionalProperties": false
+    },
+    "diagnosis": {
+      "type": "object",
+      "properties": {
+        "classification": {
+          "type": "string",
+          "enum": [
+            "bacteriologically_confirmed",
+            "clinically_diagnosed"
+          ]
+        },
+        "clinician_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "diagnosed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "supporting_test_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "clinical_rationale": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "full_course_treatment_decided": {
+          "type": "boolean"
+        },
+        "treatment_plan_confirmed": {
+          "type": "boolean"
+        },
+        "treatment_started_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "classification",
+        "clinician_id",
+        "diagnosed_at",
+        "supporting_test_ids",
+        "clinical_rationale",
+        "full_course_treatment_decided",
+        "treatment_plan_confirmed",
+        "treatment_started_at"
+      ],
+      "additionalProperties": false
+    },
+    "pickup": {
+      "type": "object",
+      "properties": {
+        "scheduled_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "scheduled",
+            "picked_up",
+            "missed"
+          ]
+        },
+        "logged_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "scheduled_date",
+        "status",
+        "logged_at"
+      ],
+      "additionalProperties": false
+    },
+    "followup": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "navigation",
+            "treatment"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "text",
+            "voice"
+          ]
+        },
+        "raw_transcript": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "trend": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "improving",
+                "no_change",
+                "concerning"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "date",
+        "kind",
+        "source",
+        "raw_transcript",
+        "summary",
+        "trend"
+      ],
+      "additionalProperties": false
+    },
+    "transition": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/state"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "to": {
+          "$ref": "#/$defs/state"
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "actor_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actor_role": {
+          "$ref": "#/$defs/actor_role"
+        }
+      },
+      "required": [
+        "from",
+        "to",
+        "at",
+        "actor_id",
+        "actor_role"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "case_id",
+    "revision",
+    "created_at",
+    "case_status",
+    "patient",
+    "consent",
+    "symptom_screen",
+    "xray",
+    "esr",
+    "case_summary",
+    "review_history",
+    "routes",
+    "diagnostic_tests",
+    "diagnosis",
+    "asha_assignment",
+    "followups",
+    "status_history"
+  ]
+}

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TB Case Sync Layer — Store & Forward Demo</title>
+<style>
+  :root {
+    --bg: #f4f6f5;
+    --panel: #ffffff;
+    --ink: #16211d;
+    --muted: #5c6b64;
+    --border: #dbe3df;
+    --accent: #1f7a5c;
+    --accent-dark: #145a42;
+    --warn: #b8860b;
+    --danger: #b3422f;
+    --queued: #b8860b;
+    --syncing: #2563a8;
+    --synced: #1f7a5c;
+    --chip-bg: #eef3f0;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10151a;
+      --panel: #1b2228;
+      --ink: #e9efe9;
+      --muted: #9aa8a1;
+      --border: #2c363d;
+      --chip-bg: #232c31;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10151a;
+    --panel: #1b2228;
+    --ink: #e9efe9;
+    --muted: #9aa8a1;
+    --border: #2c363d;
+    --chip-bg: #232c31;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); height: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    height: 100%;
+  }
+  header {
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  header h1 { font-size: 1.15rem; margin: 0; }
+  header p { margin: 2px 0 0; color: var(--muted); font-size: 0.85rem; }
+
+  .conn-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 6px 14px;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--danger); transition: background .2s; }
+  .dot.online { background: var(--accent); }
+  .conn-toggle button {
+    border: none;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 6px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+
+  main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 16px 20px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  @media (max-width: 720px) {
+    main { grid-template-columns: 1fr; }
+  }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    min-height: 260px;
+  }
+  .panel h2 {
+    font-size: 0.95rem;
+    margin: 0 0 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel .sub { color: var(--muted); font-size: 0.78rem; margin-bottom: 10px; }
+
+  .new-case-btn {
+    align-self: flex-start;
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+  }
+  .new-case-btn:hover { background: var(--accent-dark); }
+  .new-case-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .case-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-x: auto;
+  }
+  .case-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 10px;
+    background: var(--chip-bg);
+    cursor: pointer;
+    font-size: 0.82rem;
+  }
+  .case-card:hover { border-color: var(--accent); }
+  .case-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .case-id { font-family: ui-monospace, Menlo, monospace; font-size: 0.75rem; color: var(--muted); }
+  .status-chip {
+    font-size: 0.68rem;
+    padding: 2px 8px;
+    border-radius: 999px;
+    color: white;
+    white-space: nowrap;
+  }
+  .status-queued_locally { background: var(--queued); }
+  .status-syncing { background: var(--syncing); }
+  .status-synced { background: var(--synced); }
+  .status-reviewed { background: #6d5aa8; }
+
+  .case-meta { color: var(--muted); margin-top: 4px; font-size: 0.75rem; }
+
+  .empty { color: var(--muted); font-size: 0.82rem; padding: 20px 0; text-align: center; }
+
+  .log-panel {
+    grid-column: 1 / -1;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+  }
+  .log-panel h2 { font-size: 0.95rem; margin: 0 0 10px; }
+  .log {
+    max-height: 160px;
+    overflow-y: auto;
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .log-line { color: var(--muted); }
+  .log-line b { color: var(--ink); }
+
+  .json-modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px; z-index: 10;
+  }
+  .json-modal-backdrop.open { display: flex; }
+  .json-modal {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    max-width: 560px;
+    width: 100%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .json-modal-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 14px; border-bottom: 1px solid var(--border);
+  }
+  .json-modal-head button {
+    background: none; border: none; color: var(--muted); font-size: 1.1rem; cursor: pointer;
+  }
+  .json-modal pre {
+    margin: 0; padding: 14px; overflow: auto;
+    font-size: 0.72rem; line-height: 1.4;
+    font-family: ui-monospace, Menlo, monospace;
+  }
+
+  footer {
+    max-width: 1100px; margin: 0 auto; padding: 4px 20px 28px;
+    color: var(--muted); font-size: 0.78rem; line-height: 1.5;
+  }
+  footer b { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>TB Case Sync Layer</h1>
+    <p>Store-and-forward demo — pharmacist device → central verifier queue</p>
+  </div>
+  <div class="conn-toggle">
+    <span class="dot" id="connDot"></span>
+    <span id="connLabel" style="font-size:0.82rem;">Offline</span>
+    <button id="connBtn">Go online</button>
+  </div>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>📱 Pharmacist device <span style="font-weight:400;color:var(--muted);font-size:0.75rem;">(local queue)</span></h2>
+    <div class="sub">Cases created here are stored locally regardless of connectivity.</div>
+    <button class="new-case-btn" id="newCaseBtn">+ Create case (offline intake)</button>
+    <div class="case-list" id="localQueue"></div>
+  </section>
+
+  <section class="panel">
+    <h2>🩺 Central verifier queue</h2>
+    <div class="sub">Cases appear here once sync completes.</div>
+    <div class="case-list" id="centralQueue"></div>
+  </section>
+
+  <section class="log-panel">
+    <h2>Sync log</h2>
+    <div class="log" id="log"></div>
+  </section>
+</main>
+
+<footer>
+  <b>Mechanism:</b> every case created on the pharmacist device is written to a local queue immediately and is fully usable offline — nothing blocks on connectivity. A background sync trigger checks connectivity opportunistically; when a connection is available, each queued case is sent to the central verifier queue and marked <i>synced</i>, with a retry-on-failure log if a transfer is interrupted. Toggle "Go online" above to trigger a sync pass on the queued cases.
+</footer>
+
+<div class="json-modal-backdrop" id="modalBackdrop">
+  <div class="json-modal">
+    <div class="json-modal-head">
+      <strong style="font-size:0.85rem;">Case JSON</strong>
+      <button id="modalClose">✕</button>
+    </div>
+    <pre id="modalJson"></pre>
+  </div>
+</div>
+
+<script>
+(function() {
+  let online = false;
+  let cases = []; // {id, status, createdAt, syncedAt, data}
+  let logEntries = [];
+  let caseCounter = 1;
+
+  const localQueueEl = document.getElementById('localQueue');
+  const centralQueueEl = document.getElementById('centralQueue');
+  const logEl = document.getElementById('log');
+  const connDot = document.getElementById('connDot');
+  const connLabel = document.getElementById('connLabel');
+  const connBtn = document.getElementById('connBtn');
+  const newCaseBtn = document.getElementById('newCaseBtn');
+  const modalBackdrop = document.getElementById('modalBackdrop');
+  const modalJson = document.getElementById('modalJson');
+  const modalClose = document.getElementById('modalClose');
+
+  const NAMES = ["village well", "north hamlet", "riverside block", "market road", "east ward"];
+  const SEXES = ["male", "female"];
+
+  function nowIso() { return new Date().toISOString(); }
+
+  function mockCase() {
+    const id = "case-" + String(caseCounter++).padStart(4, "0");
+    const cough = 10 + Math.floor(Math.random() * 30);
+    const hasXray = Math.random() > 0.5;
+    const hasEsr = Math.random() > 0.5;
+    return {
+      case_id: id,
+      created_at: nowIso(),
+      status: "intake",
+      patient: {
+        demographics: {
+          age: 18 + Math.floor(Math.random() * 55),
+          sex: SEXES[Math.floor(Math.random() * SEXES.length)],
+          location: NAMES[Math.floor(Math.random() * NAMES.length)]
+        }
+      },
+      symptom_screen: {
+        cough_duration_days: cough,
+        fever: Math.random() > 0.5,
+        night_sweats: Math.random() > 0.5,
+        weight_loss: Math.random() > 0.5,
+        source: "voice",
+        raw_transcript: null,
+        structured_at: nowIso()
+      },
+      xray: {
+        available: hasXray,
+        image_ref: hasXray ? id + "-xray.jpg" : null,
+        model_flag: hasXray ? (Math.random() > 0.5 ? "abnormal" : "normal") : null,
+        model_confidence: hasXray ? Math.round(Math.random() * 100) / 100 : null,
+        heatmap_ref: null,
+        captured_at: hasXray ? nowIso() : null
+      },
+      esr: {
+        available: hasEsr,
+        value: hasEsr ? 20 + Math.floor(Math.random() * 60) : null,
+        flag: hasEsr ? (Math.random() > 0.5 ? "elevated" : "normal") : null,
+        captured_at: hasEsr ? nowIso() : null
+      },
+      case_summary: { brief_text: null, generated_at: null },
+      verifier_decision: { reviewer_id: null, decision: null, notes: null, decided_at: null },
+      routing: { confirmatory_test_site: null, distance_or_eta: null, routed_at: null },
+      asha_assignment: { asha_id: null, assigned_at: null, medicine_pickup_log: [] },
+      followups: []
+    };
+  }
+
+  function log(msg) {
+    logEntries.unshift({ t: nowIso(), msg });
+    if (logEntries.length > 100) logEntries.pop();
+    renderLog();
+  }
+
+  function renderLog() {
+    logEl.innerHTML = logEntries.map(e => {
+      const time = e.t.split("T")[1].split(".")[0];
+      return `<div class="log-line">[${time}] <b>${escapeHtml(e.msg)}</b></div>`;
+    }).join("");
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function statusLabel(s) {
+    return { queued_locally: "Queued (local)", syncing: "Syncing…", synced: "Synced" }[s] || s;
+  }
+
+  function renderCaseCard(c) {
+    const d = c.data;
+    return `<div class="case-card" data-id="${c.id}">
+      <div class="case-top">
+        <span class="case-id">${c.id}</span>
+        <span class="status-chip status-${c.status}">${statusLabel(c.status)}</span>
+      </div>
+      <div class="case-meta">${d.patient.demographics.age}y ${d.patient.demographics.sex} · ${d.patient.demographics.location} · cough ${d.symptom_screen.cough_duration_days}d${d.xray.available ? " · X-ray" : ""}${d.esr.available ? " · ESR" : ""}</div>
+    </div>`;
+  }
+
+  function render() {
+    const local = cases.filter(c => c.status !== "synced");
+    const central = cases.filter(c => c.status === "synced");
+
+    localQueueEl.innerHTML = local.length
+      ? local.map(renderCaseCard).join("")
+      : `<div class="empty">No cases queued locally</div>`;
+
+    centralQueueEl.innerHTML = central.length
+      ? central.map(renderCaseCard).join("")
+      : `<div class="empty">Nothing synced yet</div>`;
+  }
+
+  function openModal(caseObj) {
+    modalJson.textContent = JSON.stringify(caseObj.data, null, 2);
+    modalBackdrop.classList.add('open');
+  }
+
+  document.body.addEventListener('click', (e) => {
+    const card = e.target.closest('.case-card');
+    if (card) {
+      const id = card.getAttribute('data-id');
+      const c = cases.find(x => x.id === id);
+      if (c) openModal(c);
+    }
+  });
+  modalClose.addEventListener('click', () => modalBackdrop.classList.remove('open'));
+  modalBackdrop.addEventListener('click', (e) => { if (e.target === modalBackdrop) modalBackdrop.classList.remove('open'); });
+
+  newCaseBtn.addEventListener('click', () => {
+    const data = mockCase();
+    const c = { id: data.case_id, status: "queued_locally", data };
+    cases.push(c);
+    log(`${c.id} created on device — stored locally, queued for sync`);
+    render();
+    if (online) scheduleSyncPass();
+  });
+
+  function setOnline(v) {
+    online = v;
+    connDot.classList.toggle('online', online);
+    connLabel.textContent = online ? "Online" : "Offline";
+    connBtn.textContent = online ? "Go offline" : "Go online";
+    log(online ? "Connectivity detected — sync trigger armed" : "Connectivity lost — device continues to queue locally");
+    if (online) scheduleSyncPass();
+  }
+
+  connBtn.addEventListener('click', () => setOnline(!online));
+
+  function scheduleSyncPass() {
+    const pending = cases.filter(c => c.status === "queued_locally");
+    if (!pending.length) return;
+    pending.forEach((c, i) => {
+      setTimeout(() => {
+        if (!online) return; // connection may have dropped mid-pass
+        c.status = "syncing";
+        render();
+        log(`${c.id} sync started → central verifier queue`);
+        setTimeout(() => {
+          if (!online) {
+            log(`${c.id} sync interrupted — reverted to local queue, will retry`);
+            c.status = "queued_locally";
+            render();
+            return;
+          }
+          c.status = "synced";
+          log(`${c.id} synced successfully`);
+          render();
+        }, 900 + Math.random() * 600);
+      }, i * 500);
+    });
+  }
+
+  // seed with one example case so the demo isn't empty on load
+  (function seed() {
+    const data = mockCase();
+    cases.push({ id: data.case_id, status: "queued_locally", data });
+    log(`${data.case_id} created on device — stored locally, queued for sync`);
+    render();
+  })();
+
+  render();
+})();
+</script>
+
+</body>
+</html>

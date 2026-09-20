@@ -1,0 +1,55 @@
+test_attach_both (test_m3.ContractAndSyncTests.test_attach_both) ... ok
+test_attach_esr (test_m3.ContractAndSyncTests.test_attach_esr) ... ok
+test_attach_xray (test_m3.ContractAndSyncTests.test_attach_xray) ... ok
+test_idempotency (test_m3.ContractAndSyncTests.test_idempotency) ... ok
+test_m4a_real_review_to_m3_return_to_diagnostic_referral (test_m3.ContractAndSyncTests.test_m4a_real_review_to_m3_return_to_diagnostic_referral) ... ok
+test_no_esr_flag_without_source (test_m3.ContractAndSyncTests.test_no_esr_flag_without_source) ... ok
+test_no_inference_without_model_id (test_m3.ContractAndSyncTests.test_no_inference_without_model_id) ... ok
+test_no_input (test_m3.ContractAndSyncTests.test_no_input) ... ok
+test_overwrite_forbidden (test_m3.ContractAndSyncTests.test_overwrite_forbidden) ... ok
+test_partial_update (test_m3.ContractAndSyncTests.test_partial_update) ... ok
+test_pending_loop (test_m3.ContractAndSyncTests.test_pending_loop) ... ok
+test_reject_actor (test_m3.ContractAndSyncTests.test_reject_actor) ... ok
+test_reject_time_on_ready (test_m3.ContractAndSyncTests.test_reject_time_on_ready) ... ok
+test_source_fixture_valid (test_m3.ContractAndSyncTests.test_source_fixture_valid) ... ok
+test_source_untouched (test_m3.ContractAndSyncTests.test_source_untouched) ... ok
+test_sync_end_to_end_and_retry (test_m3.ContractAndSyncTests.test_sync_end_to_end_and_retry) ... ok
+test_unavailable_cannot_erase (test_m3.ContractAndSyncTests.test_unavailable_cannot_erase) ... ok
+test_unavailable_partial_refused (test_m3.ContractAndSyncTests.test_unavailable_partial_refused) ... ok
+test_xray_conflicting_image (test_m3.ContractAndSyncTests.test_xray_conflicting_image) ... ok
+test_xray_raw_capture_then_inference (test_m3.ContractAndSyncTests.test_xray_raw_capture_then_inference) ... ok
+test_elevated (test_m3.ESRTests.test_elevated) ... ok
+test_invalid_upper (test_m3.ESRTests.test_invalid_upper) ... ok
+test_invalid_values (test_m3.ESRTests.test_invalid_values) ... ok
+test_markedly_elevated_not_tb (test_m3.ESRTests.test_markedly_elevated_not_tb) ... ok
+test_missing_time (test_m3.ESRTests.test_missing_time) ... ok
+test_no_fake_report (test_m3.ESRTests.test_no_fake_report) ... ok
+test_no_lab_threshold (test_m3.ESRTests.test_no_lab_threshold) ... ok
+test_normal (test_m3.ESRTests.test_normal) ... ok
+test_unavailable (test_m3.ESRTests.test_unavailable) ... ok
+test_invalid_date (test_m3.ProvenanceTests.test_invalid_date) ... ok
+test_naive_date (test_m3.ProvenanceTests.test_naive_date) ... ok
+test_placeholder_date (test_m3.ProvenanceTests.test_placeholder_date) ... ok
+test_real_offset (test_m3.ProvenanceTests.test_real_offset) ... ok
+test_missing_model_no_download (test_m3.XrayTests.test_missing_model_no_download) ... ok
+test_multiple_rescaling_rejected (test_m3.XrayTests.test_multiple_rescaling_rejected) ... ok
+test_nested_rescaling (test_m3.XrayTests.test_nested_rescaling) ... ok
+test_no_captured_at (test_m3.XrayTests.test_no_captured_at) ... ok
+test_no_fake_sha (test_m3.XrayTests.test_no_fake_sha) ... ok
+test_no_image_ref (test_m3.XrayTests.test_no_image_ref) ... ok
+test_no_unverified_label (test_m3.XrayTests.test_no_unverified_label) ... ok
+test_operator_confirmed_zero_one (test_m3.XrayTests.test_operator_confirmed_zero_one) ... ok
+test_output_nan (test_m3.XrayTests.test_output_nan) ... ok
+test_output_wrong_shape (test_m3.XrayTests.test_output_wrong_shape) ... ok
+test_positive_score (test_m3.XrayTests.test_positive_score) ... ok
+test_preprocess_unknown_format (test_m3.XrayTests.test_preprocess_unknown_format) ... ok
+test_raw_score_and_scale_once (test_m3.XrayTests.test_raw_score_and_scale_once) ... ok
+test_scaling_ambiguous (test_m3.XrayTests.test_scaling_ambiguous) ... ok
+test_sha (test_m3.XrayTests.test_sha) ... ok
+test_verified_local_report_pins_weights (test_m3.XrayTests.test_verified_local_report_pins_weights) ... ok
+test_wrong_layer_scale (test_m3.XrayTests.test_wrong_layer_scale) ... ok
+
+----------------------------------------------------------------------
+Ran 50 tests in 0.090s
+
+OK

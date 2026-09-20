@@ -1,0 +1,7 @@
+# Contract handoff to parallel M3 X-ray / ESR work
+
+M2 now produces schema-valid synthetic symptom-only cases; see `canonical-case-output.json`. **Use M0 as the only contract** and `tb_m1/contract.py` for cross-snapshot checks. Please don't make M2's original HTML manual flags into model evidence; they're disabled by the M2 bridge because the legacy form does not carry acquisition timestamps, image refs, model_id, or lab reference provenance. The legacy ESR >=20 mm/hr rule is not accepted by M2.
+
+**Attach verified test data as a later revision of the *same* `case_id`** via M1's outbox after loading the latest case. Do not change patient/consent/created_at, delete histories or skip revisions. X-ray/ESR are optional and must never constitute automatic diagnosis. A verifier decision and, later, laboratory diagnostic results remain separate clinical events under M0.
+
+Suggested M3 deliverable interface (design suggestion, NOT a change to frozen M0): a pure `attach_screening_tests(existing_case, xray=None, esr=None) -> next_case` function that emits an M0-valid next revision or a clear missing-provenance error. Tests should include unavailable tests staying `available:false`, raw score/model identifiers, lab value/reference source, append-only status history as applicable, and no fabricated timestamps. Coordinate how M3 supplies the test provenance to M2 before enabling the original UI controls.

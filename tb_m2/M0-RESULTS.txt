@@ -1,0 +1,30 @@
+PASS valid fixture 01-symptoms-only.json
+PASS valid fixture 02-tests-upfront.json
+PASS valid fixture 03-more-tests-loop.json
+PASS valid fixture 04-diagnostic-result.json
+PASS malformed fixture rejected by schema 01-negative-age.json
+PASS malformed fixture rejected by schema 02-bad-xray-flag.json
+PASS malformed fixture rejected by schema 03-wrong-esr-field.json
+PASS malformed fixture rejected by schema 04-missing-required.json
+PASS malformed fixture rejected by schema 05-negative-esr.json
+PASS malformed fixture rejected by schema 06-underage.json
+PASS malformed fixture rejected by schema 07-bad-timestamp.json
+PASS invariant rejection unavailable X-ray with result
+PASS invariant rejection no cough but duration
+PASS invariant rejection ESR absent yet value set
+PASS invariant rejection case state disagrees with history
+PASS invariant rejection revision falls behind history
+PASS invariant rejection voice without consent
+PASS invariant rejection ASHA treatment before diagnosis
+PASS invariant rejection ASHA medicine pickups before diagnosis
+PASS invariant rejection request more tests without human decision
+PASS invariant rejection unsupported TB diagnosis from X-ray alone
+PASS invariant rejection positive test misclassified as clinical diagnosis
+PASS invariant rejection lab impersonates clinician for diagnosis
+PASS invariant rejection diagnosis from before positive test result
+PASS invariant rejection diagnosis without treatment plan cannot start treatment follow-up
+PASS invariant rejection treatment support before actual treatment start
+PASS invariant rejection pending diagnostic test with completed result timestamp
+PASS constructed clinical diagnosis (non-bacteriological)
+
+M0 GATE: PASS

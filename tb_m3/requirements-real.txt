@@ -1,0 +1,27 @@
+# M3 X-ray/ESR modules.
+
+# Core (always needed):
+Pillow>=10.0
+jsonschema>=4.18,<5
+rfc3339-validator>=0.1.4   # jsonschema's date-time format checking needs this extra;
+                            # without it, malformed timestamps silently pass validation.
+
+# Only needed to run the REAL model (LazyKerasTBModel / scripts/verify_xray_model.py).
+# Not required to run xray_adapter.py's own unit tests (those inject a stub model).
+huggingface_hub>=0.20
+tensorflow>=2.16
+h5py>=3.10          # used by scripts/inspect_h5_architecture.py (no TensorFlow needed for that script)
+
+# CONFIRMED REQUIRED (not a maybe): the real tb_model.h5 is a Keras
+# Functional model with a NESTED Functional submodel (InceptionV3 nested
+# inside the outer classifier graph). Keras 3 (bundled with
+# tensorflow>=2.16, the version Python 3.12 requires) FAILS to load it --
+# tested directly against the real file:
+#   ValueError: Invalid Functional model configuration. The graph of the
+#   Functional model either has loops or disconnected nodes.
+# `tf-keras` (the maintained Keras-2 compatibility shim) loads the exact
+# same file with zero errors. xray_adapter.py sets
+# os.environ["TF_USE_LEGACY_KERAS"] = "1" before importing tensorflow to
+# use this path automatically -- but tf-keras must be installed for that
+# to take effect:
+tf-keras>=2.16

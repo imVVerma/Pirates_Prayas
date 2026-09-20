@@ -1,0 +1,6 @@
+M4a verifier decision + synthetic capacity routing core: 18/18 unittest tests passed.
+Existing M0 validation: PASS.
+Existing M1 suite: 10/10 tests passed.
+Existing M2 suite: 11/11 tests passed (real browser smoke remains a separate local check).
+M4a Python compilation: PASS.
+Execution scope: synthetic-only local backend, no UI, live capacity data, model inference, real authentication or clinical deployment validation.

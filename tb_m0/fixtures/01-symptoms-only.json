@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0.0",
+  "case_id": "b61b4aa4-c4db-5838-83c7-c4b876979bf4",
+  "revision": 2,
+  "created_at": "2026-09-20T02:00:00+05:30",
+  "case_status": "ready_for_review",
+  "patient": {
+    "demographics": {
+      "age": 35,
+      "sex": "female",
+      "location": "DEMO-AREA-A"
+    },
+    "patient_ref": "DEMO-PATIENT-001"
+  },
+  "consent": {
+    "data_collection": true,
+    "share_with_verifier": true,
+    "audio_recording": false,
+    "recorded_at": "2026-09-20T01:59:00+05:30"
+  },
+  "symptom_screen": {
+    "cough_present": true,
+    "cough_duration_days": 4,
+    "fever": true,
+    "night_sweats": null,
+    "weight_loss": false,
+    "source": "text",
+    "raw_transcript": null,
+    "structured_at": "2026-09-20T02:00:00+05:30"
+  },
+  "xray": {
+    "available": false,
+    "image_ref": null,
+    "model_flag": null,
+    "model_confidence": null,
+    "heatmap_ref": null,
+    "model_id": null,
+    "captured_at": null
+  },
+  "esr": {
+    "available": false,
+    "value": null,
+    "flag": null,
+    "reference_range_used": null,
+    "captured_at": null
+  },
+  "case_summary": {
+    "brief_text": null,
+    "generated_at": null
+  },
+  "review_history": [],
+  "routes": [],
+  "diagnostic_tests": [],
+  "diagnosis": null,
+  "asha_assignment": {
+    "asha_id": null,
+    "assigned_at": null,
+    "support_phase": null,
+    "medicine_pickup_log": []
+  },
+  "followups": [],
+  "status_history": [
+    {
+      "from": null,
+      "to": "intake",
+      "at": "2026-09-20T02:00:00+05:30",
+      "actor_id": "demo-pharmacist-1",
+      "actor_role": "pharmacist"
+    },
+    {
+      "from": "intake",
+      "to": "ready_for_review",
+      "at": "2026-09-20T02:03:00+05:30",
+      "actor_id": "demo-pharmacist-1",
+      "actor_role": "pharmacist"
+    }
+  ]
+}

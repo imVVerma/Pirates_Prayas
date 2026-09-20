@@ -1,0 +1,77 @@
+{
+  "timestamp_utc": "2026-09-20T00:23:37.463606+00:00",
+  "model_path": "/mnt/user-data/uploads/tb_model.h5",
+  "normal_image_path": "/mnt/user-data/uploads/tb-negative.png",
+  "tb_image_path": "/mnt/user-data/uploads/tb-positive.png",
+  "steps": {
+    "h5_architecture": {
+      "file": "/mnt/user-data/uploads/tb_model.h5",
+      "has_model_config": true,
+      "input_shape": [
+        null,
+        300,
+        300,
+        3
+      ],
+      "output_shape": null,
+      "layer_types_in_order": [
+        "InputLayer",
+        "Rescaling",
+        "Functional",
+        "GlobalAveragePooling2D",
+        "Flatten",
+        "Dense"
+      ],
+      "rescaling_layer": {
+        "name": "rescaling",
+        "trainable": true,
+        "dtype": "float32",
+        "scale": 0.00392156862745098,
+        "offset": 0.0
+      },
+      "verdict": "FOUND an internal Rescaling layer with scale=0.00392156862745098. The model expects RAW pixel input (0-255 float, NOT pre-divided) -- the graph itself applies the 0.00392156862745098 scaling. Any caller that also divides by 255 before predict() (as predict.py and deployment/streamlit_deploy.py both do) will double-scale and degrade predictions. xray_adapter.preprocess_image() must NOT divide by 255 if this verdict holds."
+    },
+    "load": {
+      "loaded_ok": true,
+      "input_shape": [
+        null,
+        300,
+        300,
+        3
+      ],
+      "output_shape": [
+        null,
+        1
+      ]
+    },
+    "preprocessing_cross_check": {
+      "raw_0_255": {
+        "normal": 0.024640649557113647,
+        "tb": 0.984719455242157,
+        "separation": 0.9600788056850433
+      },
+      "prescaled_0_1": {
+        "normal": 0.9896616339683533,
+        "tb": 0.9907088279724121,
+        "separation": 0.0010471940040588379
+      },
+      "h5_says_expects": "raw_0_255",
+      "empirical_verdict": "raw_0_255",
+      "AGREEMENT": "static and empirical evidence AGREE on 'raw_0_255' (separation 0.9601 vs 0.0010 for the other convention)"
+    },
+    "degenerate_input_bias_check": {
+      "all_black": 0.9900810718536377,
+      "all_white": 0.9951852560043335,
+      "random_noise": 0.9864974617958069,
+      "WARNING": "All-black, all-white, and random-noise inputs ALL score >0.9 (same range as a genuine TB-positive image). This model appears to default to 'abnormal' for anything that doesn't specifically match its narrow training distribution of normal chest X-rays, rather than genuinely recognizing TB-specific features. Expect false positives on any out-of-distribution input (wrong image type, unusual positioning, scanner artifacts, non-chest images). Treat model_flag='abnormal' as low-specificity, and never as confirmation of anything."
+    },
+    "label_direction": {
+      "chosen_preprocessing": "raw_0_255",
+      "known_normal_image_score": 0.024640649557113647,
+      "known_tb_image_score": 0.984719455242157,
+      "expected": "normal_score < 0.5 < tb_score (index 1 / high score = TB-positive)",
+      "matches_expected_direction": true
+    }
+  },
+  "FINAL_VERDICT": "PASS"
+}

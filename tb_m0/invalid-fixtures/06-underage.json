@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0.0",
+  "case_id": "affb1d82-ff8f-55c0-bd0e-d7d05d33ea48",
+  "revision": 2,
+  "created_at": "2026-09-20T02:00:00+05:30",
+  "case_status": "ready_for_review",
+  "patient": {
+    "demographics": {
+      "age": 17,
+      "sex": "female",
+      "location": "DEMO-AREA-A"
+    },
+    "patient_ref": "DEMO-PATIENT-002"
+  },
+  "consent": {
+    "data_collection": true,
+    "share_with_verifier": true,
+    "audio_recording": false,
+    "recorded_at": "2026-09-20T01:59:00+05:30"
+  },
+  "symptom_screen": {
+    "cough_present": true,
+    "cough_duration_days": 14,
+    "fever": true,
+    "night_sweats": true,
+    "weight_loss": false,
+    "source": "text",
+    "raw_transcript": null,
+    "structured_at": "2026-09-20T02:00:00+05:30"
+  },
+  "xray": {
+    "available": true,
+    "image_ref": "synthetic://cxr/02",
+    "model_flag": "abnormal",
+    "model_confidence": 0.81,
+    "heatmap_ref": null,
+    "model_id": "synthetic-demo-model-unvalidated",
+    "captured_at": "2026-09-20T02:01:00+05:30"
+  },
+  "esr": {
+    "available": true,
+    "value": 51.0,
+    "flag": "elevated",
+    "reference_range_used": "synthetic lab-reported reference, not a TB diagnostic cutoff",
+    "captured_at": "2026-09-20T02:02:00+05:30"
+  },
+  "case_summary": {
+    "brief_text": "Synthetic symptoms, X-ray model flag and ESR signal; requires qualified review, no diagnosis.",
+    "generated_at": "2026-09-20T02:02:30+05:30"
+  },
+  "review_history": [],
+  "routes": [],
+  "diagnostic_tests": [],
+  "diagnosis": null,
+  "asha_assignment": {
+    "asha_id": null,
+    "assigned_at": null,
+    "support_phase": null,
+    "medicine_pickup_log": []
+  },
+  "followups": [],
+  "status_history": [
+    {
+      "from": null,
+      "to": "intake",
+      "at": "2026-09-20T02:00:00+05:30",
+      "actor_id": "demo-pharmacist-1",
+      "actor_role": "pharmacist"
+    },
+    {
+      "from": "intake",
+      "to": "ready_for_review",
+      "at": "2026-09-20T02:03:00+05:30",
+      "actor_id": "demo-pharmacist-1",
+      "actor_role": "pharmacist"
+    }
+  ]
+}

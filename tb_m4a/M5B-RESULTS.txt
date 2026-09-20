@@ -1,0 +1,25 @@
+M5b verification — 2026-09-20
+
+M5b tests: 11/11 PASS
+
+Covered:
+- schedule and complete navigation follow-up
+- treatment follow-up blocked without treatment-support assignment
+- only assigned ASHA can record follow-up
+- unauthorized role blocked from scheduling
+- follow-up cannot predate assignment
+- treatment medicine pickup scheduling
+- pickup completion is append-only
+- missed pickup plus replacement scheduling in one revision
+- duplicate pickup outcome rejected
+- stale revision rejected
+- follow-up operations do not change case_status
+
+Regression in packaged foundation:
+- M0: PASS
+- M1: 10/10
+- M3: 50/50
+- M4a + M4b + M5a + M5b: 43/43
+
+Known limitation carried forward:
+M2's packaged browser smoke test expects a legacy intake-spine.html file not present in this foundation package. M2 core tests previously passed 11/11. No M2 code was changed for M5b.

@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "case_id": "7b7d2b52-5b5d-4f24-9e8c-1e4f6e8d5f10",
+  "revision": 14,
+  "created_at": "2026-09-20T04:00:00+05:30",
+  "case_status": "diagnosed",
+  "patient": {"demographics": {"age": 35, "sex": "female", "location": "DEMO-AREA-A"}, "patient_ref": "DEMO-PATIENT-001"},
+  "consent": {"data_collection": true, "share_with_verifier": true, "audio_recording": false, "recorded_at": "2026-09-20T04:00:00+05:30"},
+  "symptom_screen": {"cough_present": true, "cough_duration_days": 12, "fever": true, "night_sweats": true, "weight_loss": true, "source": "text", "raw_transcript": null, "structured_at": "2026-09-20T04:00:00+05:30"},
+  "xray": {"available": true, "image_ref": "synthetic/tb-positive.png", "model_flag": "abnormal", "model_confidence": 0.9847, "heatmap_ref": null, "model_id": "demo-h5-sha256-raw-0-255", "captured_at": "2026-09-20T05:00:00+05:30"},
+  "esr": {"available": true, "value": 42, "flag": "elevated", "reference_range_used": "synthetic reported reference 0-22 mm/h", "captured_at": "2026-09-20T05:01:00+05:30"},
+  "case_summary": {"brief_text": "Synthetic demo case. Screening evidence is for qualified human review only; it does not itself establish TB diagnosis.", "generated_at": "2026-09-20T05:02:00+05:30"},
+  "review_history": [
+    {"review_id": "11111111-1111-4111-8111-111111111111", "reviewer_id": "demo-verifier-1", "reviewer_role": "verifier", "decision": "more_tests_needed", "requested_tests": ["xray", "esr"], "notes": "Synthetic demo: request additional screening evidence.", "decided_at": "2026-09-20T05:03:00+05:30"},
+    {"review_id": "22222222-2222-4222-8222-222222222222", "reviewer_id": "demo-verifier-1", "reviewer_role": "verifier", "decision": "intervention_required", "requested_tests": [], "notes": "Synthetic demo: explicit diagnostic referral after review.", "decided_at": "2026-09-20T05:20:00+05:30"}
+  ],
+  "routes": [
+    {"route_id": "33333333-3333-4333-8333-333333333333", "purpose": "additional_screening", "site_id": "DEMO-SCREEN-01", "status": "completed", "routed_at": "2026-09-20T05:04:00+05:30"},
+    {"route_id": "44444444-4444-4444-8444-444444444444", "purpose": "diagnostic_testing", "site_id": "DEMO-LAB-01", "status": "completed", "routed_at": "2026-09-20T05:21:00+05:30"}
+  ],
+  "diagnostic_tests": [
+    {"test_id": "55555555-5555-4555-8555-555555555555", "test_type": "xpert_mtb_rif", "result": "positive", "lab_id": "DEMO-LAB-01", "specimen_ref": "SYN-SPEC-001", "collected_at": "2026-09-20T05:25:00+05:30", "result_at": "2026-09-20T05:40:00+05:30"}
+  ],
+  "diagnosis": {"classification": "bacteriologically_confirmed", "clinician_id": "demo-clinician-1", "diagnosed_at": "2026-09-20T05:50:00+05:30", "supporting_test_ids": ["55555555-5555-4555-8555-555555555555"], "clinical_rationale": null, "full_course_treatment_decided": true, "treatment_plan_confirmed": true, "treatment_started_at": "2026-09-20T06:00:00+05:30"},
+  "asha_assignment": {"asha_id": "demo-asha-01", "assigned_at": "2026-09-20T06:05:00+05:30", "support_phase": "treatment_support", "medicine_pickup_log": [
+    {"scheduled_date": "2026-09-21", "status": "missed", "logged_at": "2026-09-21T12:00:00+05:30"},
+    {"scheduled_date": "2026-09-24", "status": "scheduled", "logged_at": null}
+  ]},
+  "followups": [
+    {"date": "2026-09-21T12:01:00+05:30", "kind": "treatment", "source": "text", "raw_transcript": null, "summary": "Scheduled follow-up after missed pickup.", "trend": "no_change"}
+  ],
+  "status_history": [
+    {"from": null, "to": "intake", "at": "2026-09-20T04:00:00+05:30", "actor_id": "demo-pharmacist-1", "actor_role": "pharmacist"},
+    {"from": "intake", "to": "ready_for_review", "at": "2026-09-20T04:10:00+05:30", "actor_id": "demo-pharmacist-1", "actor_role": "pharmacist"},
+    {"from": "ready_for_review", "to": "pending_additional_test", "at": "2026-09-20T05:03:00+05:30", "actor_id": "demo-verifier-1", "actor_role": "verifier"},
+    {"from": "pending_additional_test", "to": "ready_for_review", "at": "2026-09-20T05:10:00+05:30", "actor_id": "demo-pharmacist-1", "actor_role": "pharmacist"},
+    {"from": "ready_for_review", "to": "routed_for_diagnostics", "at": "2026-09-20T05:20:00+05:30", "actor_id": "demo-verifier-1", "actor_role": "verifier"},
+    {"from": "routed_for_diagnostics", "to": "diagnostic_result_available", "at": "2026-09-20T05:40:00+05:30", "actor_id": "demo-lab-1", "actor_role": "lab"},
+    {"from": "diagnostic_result_available", "to": "diagnosed", "at": "2026-09-20T05:50:00+05:30", "actor_id": "demo-clinician-1", "actor_role": "clinician"}
+  ]
+}

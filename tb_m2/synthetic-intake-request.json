@@ -1,0 +1,16 @@
+{
+  "case_id": "b61b4aa4-c4db-5838-83c7-c4b876979bf4",
+  "created_at": "2026-09-20T04:00:00+05:30",
+  "consent_recorded_at": "2026-09-20T03:59:59+05:30",
+  "consent_confirmed": true,
+  "synthetic_acknowledged": true,
+  "age": 35,
+  "sex": "female",
+  "location": "DEMO-AREA-A",
+  "cough_duration_days": 12,
+  "fever": true,
+  "night_sweats": null,
+  "weight_loss": false,
+  "xray_available": false,
+  "esr_available": false
+}

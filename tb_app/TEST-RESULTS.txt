@@ -1,0 +1,19 @@
+M7 integration verification — 2026-09-20, Python 3.13, synthetic-only
+
+Measured across independent runs:
+M0 case-schema validator: PASS
+M1 tests: 10/10 PASS
+M2 HTTP/intake tests: 11/11 PASS
+M3 tests: 50/50 PASS (after reconciling missing APIs in uploaded ZIP)
+M4a/M4b/M5a/M5b tests: 54/54 PASS
+M6 full canonical workflow tests: 2/2 PASS
+M6.5 read model tests: 4/4 PASS
+M7 real two-server HTTP/SQLite workflow: 3/3 PASS
+M7 optional Chromium DOM smoke: SKIPPED (managed Chromium blocks localhost navigation)
+Intake bridge & sync workbench JavaScript syntax: PASS (node --check)
+
+Actual HTTP integration exercises central being down, local SQLite persistence,
+retry and ACK, same case_id, additional screening loop, referral, real lab
+result separate from clinician diagnosis, care-plan/treatment prerequisites,
+ASHA pickup/follow-up and stale revision rejection; direct symptom-only referral, a rejected false bacteriological confirmation and server-selected demo actor identity. No model inference was
+run by M7; uploaded M3 report describes an earlier two-image model smoke test.

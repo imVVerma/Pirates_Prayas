@@ -1,0 +1,33 @@
+M6 END-TO-END INTEGRATION GATE
+===============================
+
+Result: PASS
+
+M6 tests: 2/2 passed.
+
+Journey exercised:
+M2 intake -> M4a human review -> verified M3 X-ray/ESR evidence -> M4a diagnostic referral -> M4b diagnostic order/result/clinician diagnosis -> revision-safe treatment-plan confirmation -> treatment initiation -> M5a ASHA treatment-support assignment -> M5b medicine pickup continuity and follow-up.
+
+Assertions:
+- Stable case_id preserved across every revision.
+- Revision increased monotonically on every mutation.
+- Verified real-model X-ray smoke output (TB score 0.9847194552) was attached as screening evidence.
+- X-ray/ESR did not create diagnosis or referral automatically.
+- Diagnostic referral was an explicit verifier action.
+- Positive diagnostic result was supplied by the lab.
+- Diagnosis was an explicit clinician action.
+- Treatment-plan confirmation is now a revision-safe clinician operation.
+- Treatment initiation preceded treatment-support ASHA assignment.
+- Missed pickup remained in immutable history and a later pickup was appended.
+- Final case_status remained diagnosed; ASHA continuity did not silently change clinical state.
+
+M3 evidence basis:
+- Supplied M3 report: reports/smoke_test_report_20260920T002345Z.json/.md
+- Report FINAL_VERDICT: PASS
+- Real-model normal score: 0.024640649557113647
+- Real-model TB score: 0.984719455242157
+- Correct preprocessing: raw 0-255
+- Degenerate-input limitation documented by supplied M3 report.
+
+Known limitation:
+- The packaged M2 browser test expects historical tb_audit/intake-spine.html, absent from this foundation package. The other 10 M2 tests are the previously verified core suite. This was not patched during M6.

@@ -1,0 +1,8 @@
+M6.5 UI READ MODEL GATE
+========================
+Canonical synthetic fixture: PASS (M0 schema validation)
+Read-model tests: 4/4 PASS
+Projection mutates source case: NO
+Diagnosis inferred from screening: NO
+Treatment inferred from screening: NO
+UI-facing read model: generated

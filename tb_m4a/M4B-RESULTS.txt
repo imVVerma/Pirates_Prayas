@@ -1,0 +1,2 @@
+M4b diagnostic workflow tests
+See test_m4b.py. All tests should pass with M0/M1/M4a siblings.

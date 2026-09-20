@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Case Intake — TB Screening Spine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    --paper:#EFF2ED;
+    --surface:#FFFFFF;
+    --ink:#17211C;
+    --ink-soft:#4B564E;
+    --line:#D7DBD1;
+    --accent:#1E6F63;
+    --accent-ink:#FFFFFF;
+    --amber:#B8752E;
+    --amber-bg:#F6EADA;
+    --mono-bg:#12241F;
+    --mono-ink:#D9EFE8;
+  }
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  *,*::before,*::after{box-sizing:inherit;}
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#151915;
+      --surface:#1C211C;
+      --ink:#E7ECE5;
+      --ink-soft:#A6B0A0;
+      --line:#33392F;
+      --accent:#4FA391;
+      --accent-ink:#0C1512;
+      --amber:#D89552;
+      --amber-bg:#2E2416;
+      --mono-bg:#0C1613;
+      --mono-ink:#BFE4D8;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#151915;
+    --surface:#1C211C;
+    --ink:#E7ECE5;
+    --ink-soft:#A6B0A0;
+    --line:#33392F;
+    --accent:#4FA391;
+    --accent-ink:#0C1512;
+    --amber:#D89552;
+    --amber-bg:#2E2416;
+    --mono-bg:#0C1613;
+    --mono-ink:#BFE4D8;
+  }
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2{
+    font-family:"Source Serif 4", Georgia, serif;
+    font-weight:600;
+    margin:0;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 64px;}
+
+  header{
+    display:flex;flex-wrap:wrap;gap:16px;
+    align-items:baseline;justify-content:space-between;
+    padding-bottom:20px;margin-bottom:28px;
+    border-bottom:1px solid var(--line);
+  }
+  header .title h1{font-size:1.5rem;letter-spacing:-0.01em;}
+  header .title p{margin:4px 0 0;color:var(--ink-soft);font-size:0.92rem;max-width:52ch;}
+  header .meta{font-family:"IBM Plex Mono",Menlo,Consolas,monospace;font-size:0.78rem;color:var(--ink-soft);text-align:right;}
+
+  .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px;align-items:start;}
+  @media (max-width:860px){.grid{grid-template-columns:1fr;}}
+
+  section.block{margin-bottom:30px;}
+  section.block h2{font-size:1.05rem;padding-left:14px;border-left:3px solid var(--accent);margin-bottom:14px;}
+
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:0.86rem;color:var(--ink-soft);margin-bottom:6px;}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  input[type=text],input[type=number],select{
+    width:100%;padding:10px 12px;
+    border:1px solid var(--line);border-radius:4px;
+    background:var(--surface);color:var(--ink);
+    font-family:inherit;font-size:0.95rem;
+  }
+  input:focus,select:focus,button:focus-visible,.toggle input:focus-visible + .track{
+    outline:2px solid var(--accent);outline-offset:2px;
+  }
+
+  .toggle-row{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 0;border-bottom:1px solid var(--line);}
+  .toggle-row:last-child{border-bottom:none;}
+  .toggle-row span.label{font-size:0.95rem;}
+  .toggle-row span.hint{display:block;font-size:0.78rem;color:var(--ink-soft);margin-top:2px;}
+
+  .toggle{position:relative;display:inline-block;width:42px;height:24px;flex:none;}
+  .toggle input{opacity:0;width:0;height:0;}
+  .track{position:absolute;inset:0;background:var(--line);border-radius:999px;transition:background .15s;cursor:pointer;}
+  .track::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:var(--surface);transition:transform .15s;}
+  .toggle input:checked + .track{background:var(--accent);}
+  .toggle input:checked + .track::after{transform:translateX(18px);}
+
+  .sub-panel{margin-top:10px;padding:14px 14px 2px;background:var(--surface);border:1px solid var(--line);border-radius:6px;}
+  .sub-panel[hidden]{display:none;}
+
+  .flag{display:inline-block;font-size:0.78rem;padding:3px 9px;border-radius:999px;margin-left:8px;}
+  .flag.abnormal,.flag.elevated{background:var(--amber-bg);color:var(--amber);}
+  .flag.normal{background:var(--line);color:var(--ink-soft);}
+
+  .sticky{position:sticky;top:20px;}
+
+  .record{
+    background:var(--mono-bg);color:var(--mono-ink);
+    border-radius:8px;padding:18px;
+    font-family:"IBM Plex Mono",Menlo,Consolas,monospace;
+    font-size:0.8rem;line-height:1.55;
+    max-height:340px;overflow:auto;
+    white-space:pre;
+  }
+
+  .actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  button{
+    font-family:inherit;font-size:0.9rem;font-weight:500;
+    padding:10px 16px;border-radius:5px;border:1px solid transparent;
+    cursor:pointer;
+  }
+  button.primary{background:var(--accent);color:var(--accent-ink);}
+  button.primary:disabled{opacity:0.55;cursor:default;}
+  button.ghost{background:transparent;border-color:var(--line);color:var(--ink);}
+
+  .summary-box{
+    margin-top:22px;background:var(--surface);border:1px solid var(--line);
+    border-radius:6px;padding:16px;
+  }
+  .summary-box h3{margin:0 0 10px;font-size:0.9rem;color:var(--ink-soft);font-weight:500;}
+  .summary-text{font-size:0.95rem;white-space:pre-wrap;}
+  .summary-empty{color:var(--ink-soft);font-size:0.9rem;}
+
+  .principle{
+    margin-top:26px;font-size:0.82rem;color:var(--ink-soft);
+    padding-top:14px;border-top:1px solid var(--line);
+  }
+
+  footer.note{margin-top:40px;font-size:0.8rem;color:var(--ink-soft);max-width:70ch;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="title">
+      <h1>Case intake</h1>
+      <p>WHO four-symptom screen, structured into a case record, with a summary drafted for the human verifier. The verifier decides — this page never does.</p>
+    </div>
+    <div class="meta" id="metaBox">case pending</div>
+  </header>
+
+  <div class="grid">
+    <div>
+      <section class="block">
+        <h2>Patient</h2>
+        <div class="row">
+          <div class="field">
+            <label for="age">Age</label>
+            <input type="number" id="age" min="0" max="120" placeholder="e.g. 34">
+          </div>
+          <div class="field">
+            <label for="sex">Sex</label>
+            <select id="sex">
+              <option value="">Select</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="loc">Village / area</label>
+          <input type="text" id="loc" placeholder="e.g. Rajpura block, Patiala">
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>WHO four-symptom screen</h2>
+        <div class="field">
+          <label for="cough">Cough duration (days, 0 if none)</label>
+          <input type="number" id="cough" min="0" placeholder="e.g. 18">
+        </div>
+        <div class="toggle-row">
+          <span class="label">Fever</span>
+          <label class="toggle"><input type="checkbox" id="fever"><span class="track"></span></label>
+        </div>
+        <div class="toggle-row">
+          <span class="label">Night sweats</span>
+          <label class="toggle"><input type="checkbox" id="sweats"><span class="track"></span></label>
+        </div>
+        <div class="toggle-row">
+          <span class="label">Unexplained weight loss</span>
+          <label class="toggle"><input type="checkbox" id="weightloss"><span class="track"></span></label>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Test signals</h2>
+        <div class="toggle-row">
+          <div>
+            <span class="label">Chest X-ray available</span>
+            <span class="hint">Branch B — test available at first contact</span>
+          </div>
+          <label class="toggle"><input type="checkbox" id="xrayAvail"><span class="track"></span></label>
+        </div>
+        <div class="sub-panel" id="xrayPanel" hidden>
+          <div class="field">
+            <label for="xrayFlag">Model read</label>
+            <select id="xrayFlag">
+              <option value="normal">Normal</option>
+              <option value="abnormal">Abnormal</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="xrayConf">Model confidence (0–1)</label>
+            <input type="number" id="xrayConf" step="0.01" min="0" max="1" value="0.80">
+          </div>
+        </div>
+
+        <div class="toggle-row">
+          <div>
+            <span class="label">ESR available</span>
+            <span class="hint">Threshold rule, not a model</span>
+          </div>
+          <label class="toggle"><input type="checkbox" id="esrAvail"><span class="track"></span></label>
+        </div>
+        <div class="sub-panel" id="esrPanel" hidden>
+          <div class="field">
+            <label for="esrVal">ESR value (mm/hr)</label>
+            <input type="number" id="esrVal" min="0" placeholder="e.g. 32">
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="sticky">
+      <section class="block">
+        <h2>Case record</h2>
+        <div class="record" id="record"></div>
+        <div class="actions">
+          <button class="primary" id="genBtn">Generate summary for verifier</button>
+          <button class="ghost" id="dlBtn">Download case JSON</button>
+        </div>
+        <div class="summary-box">
+          <h3>Verifier brief</h3>
+          <div id="summaryOut" class="summary-empty">Not generated yet.</div>
+        </div>
+        <p class="principle">This brief structures and flags signals. It never states a diagnosis — a qualified human reviewer makes the intervention call.</p>
+      </section>
+    </div>
+  </div>
+
+  <footer class="note">Demo spine: WHO intake flow + case-summary generator. X-ray/ESR values here are entered directly to simulate Branch B (test available at first contact) — the X-ray+ESR chat owns the real model integration.</footer>
+</div>
+
+<script>
+(function(){
+  const state = {
+    case_id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
+    created_at: new Date().toISOString(),
+    status: "intake",
+    patient: { demographics: { age: null, sex: "", location: "" } },
+    symptom_screen: { cough_duration_days: null, fever: false, night_sweats: false, weight_loss: false, source: "text" },
+    xray: { available: false, model_flag: null, model_confidence: null },
+    esr: { available: false, value: null, flag: null },
+    case_summary: { brief_text: null, generated_at: null }
+  };
+
+  const $ = id => document.getElementById(id);
+  const recordEl = $("record"), metaEl = $("metaBox");
+  const xrayPanel = $("xrayPanel"), esrPanel = $("esrPanel");
+  const summaryOut = $("summaryOut"), genBtn = $("genBtn"), dlBtn = $("dlBtn");
+
+  const ESR_THRESHOLD = 20; // mm/hr — placeholder pending literature-sourced value from Track 2
+
+  function render(){
+    recordEl.textContent = JSON.stringify(state, null, 2);
+    metaEl.textContent = "case " + state.case_id.slice(0,8) + " · " + state.status;
+  }
+
+  function bindText(id, path){
+    $(id).addEventListener("input", e => {
+      const v = e.target.value;
+      setPath(path, v === "" ? null : v);
+      render();
+    });
+  }
+  function bindNumber(id, path){
+    $(id).addEventListener("input", e => {
+      const v = e.target.value;
+      setPath(path, v === "" ? null : Number(v));
+      render();
+    });
+  }
+  function bindBool(id, path){
+    $(id).addEventListener("change", e => { setPath(path, e.target.checked); render(); });
+  }
+  function setPath(path, val){
+    const parts = path.split(".");
+    let obj = state;
+    for (let i=0;i<parts.length-1;i++) obj = obj[parts[i]];
+    obj[parts[parts.length-1]] = val;
+  }
+
+  bindNumber("age","patient.demographics.age");
+  bindText("sex","patient.demographics.sex");
+  bindText("loc","patient.demographics.location");
+  bindNumber("cough","symptom_screen.cough_duration_days");
+  bindBool("fever","symptom_screen.fever");
+  bindBool("sweats","symptom_screen.night_sweats");
+  bindBool("weightloss","symptom_screen.weight_loss");
+
+  $("xrayAvail").addEventListener("change", e=>{
+    state.xray.available = e.target.checked;
+    xrayPanel.hidden = !e.target.checked;
+    if (!e.target.checked){ state.xray.model_flag=null; state.xray.model_confidence=null; }
+    else { state.xray.model_flag = $("xrayFlag").value; state.xray.model_confidence = Number($("xrayConf").value); }
+    render();
+  });
+  $("xrayFlag").addEventListener("change", e=>{ state.xray.model_flag = e.target.value; render(); });
+  $("xrayConf").addEventListener("input", e=>{ state.xray.model_confidence = Number(e.target.value); render(); });
+
+  $("esrAvail").addEventListener("change", e=>{
+    state.esr.available = e.target.checked;
+    esrPanel.hidden = !e.target.checked;
+    if (!e.target.checked){ state.esr.value=null; state.esr.flag=null; }
+    render();
+  });
+  $("esrVal").addEventListener("input", e=>{
+    const v = e.target.value === "" ? null : Number(e.target.value);
+    state.esr.value = v;
+    state.esr.flag = v === null ? null : (v >= ESR_THRESHOLD ? "elevated" : "normal");
+    render();
+  });
+
+  dlBtn.addEventListener("click", async ()=>{
+    const downloads = await claude.use("downloads");
+    if (!downloads){ alert("Download isn't available in this view."); return; }
+    await downloads.save({ filename: "case-" + state.case_id.slice(0,8) + ".json", data: JSON.stringify(state, null, 2) });
+  });
+
+  genBtn.addEventListener("click", async ()=>{
+    const sample = await claude.use("sample");
+    if (!sample){
+      summaryOut.textContent = "Summary generation isn't available in this view.";
+      summaryOut.className = "summary-empty";
+      return;
+    }
+    genBtn.disabled = true;
+    summaryOut.className = "summary-text";
+    summaryOut.textContent = "Drafting…";
+
+    const prompt = "You are drafting a brief for a qualified human TB verifier, not diagnosing. " +
+      "Summarize the following case signals in under 130 words, plain prose, no markdown. " +
+      "State which signals are present and whether they point the same direction; do not say the patient has or does not have TB, " +
+      "and do not recommend a specific treatment. If a signal is unavailable, say so rather than guessing.\n\n" +
+      JSON.stringify({
+        demographics: state.patient.demographics,
+        symptom_screen: state.symptom_screen,
+        xray: state.xray,
+        esr: state.esr
+      }, null, 2);
+
+    try{
+      const res = await sample(prompt, {
+        modelTier: "quick",
+        onText: ({text}) => { summaryOut.textContent = text; }
+      });
+      state.case_summary.brief_text = res.text;
+      state.case_summary.generated_at = new Date().toISOString();
+      state.status = "ready_for_review";
+      render();
+    } catch(err){
+      summaryOut.textContent = "Couldn't generate a summary right now (" + (err && err.code ? err.code : "error") + "). You can try again.";
+    } finally {
+      genBtn.disabled = false;
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

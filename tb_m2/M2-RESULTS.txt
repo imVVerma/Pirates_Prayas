@@ -1,0 +1,17 @@
+test_age_scope_and_demo_region (tb_m2.test_m2.AdapterTests.test_age_scope_and_demo_region) ... ok
+test_bad_symptom_type_or_extra_fields (tb_m2.test_m2.AdapterTests.test_bad_symptom_type_or_extra_fields) ... ok
+test_cough_unknown_vs_absent (tb_m2.test_m2.AdapterTests.test_cough_unknown_vs_absent) ... ok
+test_explicit_consent_rejects_default_true_assumptions (tb_m2.test_m2.AdapterTests.test_explicit_consent_rejects_default_true_assumptions) ... ok
+test_no_silent_test_fabrication_or_esr_cutoff (tb_m2.test_m2.AdapterTests.test_no_silent_test_fabrication_or_esr_cutoff) ... ok
+test_valid_case_m0_and_unknown_preservation (tb_m2.test_m2.AdapterTests.test_valid_case_m0_and_unknown_preservation) ... ok
+test_actual_form_submission_offline_then_sync_no_duplicate (tb_m2.test_m2.HTTPTests.test_actual_form_submission_offline_then_sync_no_duplicate) ... ok
+test_actual_legacy_html_is_served_with_bridge (tb_m2.test_m2.HTTPTests.test_actual_legacy_html_is_served_with_bridge) ... ok
+test_invalid_case_rejected_before_local_storage (tb_m2.test_m2.HTTPTests.test_invalid_case_rejected_before_local_storage) ... ok
+test_modified_after_first_submit_explicit_conflict (tb_m2.test_m2.HTTPTests.test_modified_after_first_submit_explicit_conflict) ... ok
+test_wrong_origin_forbidden (tb_m2.test_m2.HTTPTests.test_wrong_origin_forbidden) ... ok
+test_browser_fills_original_form_persists_and_syncs (tb_m2.test_browser_smoke.RealBrowserSmoke.test_browser_fills_original_form_persists_and_syncs) ... skipped 'Managed Chromium blocks all navigation in this execution environment'
+
+----------------------------------------------------------------------
+Ran 12 tests in 4.549s
+
+OK (skipped=1)

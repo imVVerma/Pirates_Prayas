@@ -1,0 +1,5 @@
+# Supported intended runtime: CPython 3.11 or 3.12 in a separate virtualenv.
+# This sandbox uses Python 3.13; its lack of TensorFlow is not a test failure.
+-r requirements-core.txt
+tensorflow==2.16.2
+tf-keras==2.16.0

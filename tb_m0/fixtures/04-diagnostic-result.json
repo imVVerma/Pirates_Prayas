@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0.0",
+  "case_id": "8be718e6-c6d9-5e2d-98a4-ba60cac5be31",
+  "revision": 5,
+  "created_at": "2026-09-20T02:00:00+05:30",
+  "case_status": "diagnosed",
+  "patient": {
+    "demographics": {
+      "age": 41,
+      "sex": "female",
+      "location": "DEMO-AREA-A"
+    },
+    "patient_ref": "DEMO-PATIENT-004"
+  },
+  "consent": {
+    "data_collection": true,
+    "share_with_verifier": true,
+    "audio_recording": false,
+    "recorded_at": "2026-09-20T01:59:00+05:30"
+  },
+  "symptom_screen": {
+    "cough_present": true,
+    "cough_duration_days": 4,
+    "fever": true,
+    "night_sweats": null,
+    "weight_loss": false,
+    "source": "text",
+    "raw_transcript": null,
+    "structured_at": "2026-09-20T02:00:00+05:30"
+  },
+  "xray": {
+    "available": false,
+    "image_ref": null,
+    "model_flag": null,
+    "model_confidence": null,
+    "heatmap_ref": null,
+    "model_id": null,
+    "captured_at": null
+  },
+  "esr": {
+    "available": false,
+    "value": null,
+    "flag": null,
+    "reference_range_used": null,
+    "captured_at": null
+  },
+  "case_summary": {
+    "brief_text": null,
+    "generated_at": null
+  },
+  "review_history": [
+    {
+      "review_id": "a59d9ab7-5c82-53ac-89fe-d58fce2af095",
+      "reviewer_id": "demo-verifier-1",
+      "reviewer_role": "verifier",
+      "decision": "intervention_required",
+      "requested_tests": [],
+      "notes": "Send for molecular diagnostic testing.",
+      "decided_at": "2026-09-20T02:15:00+05:30"
+    }
+  ],
+  "routes": [
+    {
+      "route_id": "d216c5e8-173f-5c16-a39e-db6f0b4111a4",
+      "purpose": "diagnostic_testing",
+      "site_id": "DEMO-NAAT-LAB",
+      "status": "completed",
+      "routed_at": "2026-09-20T02:16:00+05:30"
+    }
+  ],
+  "diagnostic_tests": [
+    {
+      "test_id": "d68f1f71-5de8-530e-b6f0-8fb072771718",
+      "test_type": "xpert_ultra",
+      "result": "positive",
+      "lab_id": "DEMO-NAAT-LAB",
+      "specimen_ref": "synthetic://specimen/04",
+      "collected_at": "2026-09-20T03:00:00+05:30",
+      "result_at": "2026-09-20T05:00:00+05:30"
+    }
+  ],
+  "diagnosis": {
+    "classification": "bacteriologically_confirmed",
+    "clinician_id": "demo-clinician-1",
+    "diagnosed_at": "2026-09-20T05:15:00+05:30",
+    "supporting_test_ids": [
+      "d68f1f71-5de8-530e-b6f0-8fb072771718"
+    ],
+    "clinical_rationale": null,
+    "full_course_treatment_decided": true,
+    "treatment_plan_confirmed": true,
+    "treatment_started_at": "2026-09-20T05:20:00+05:30"
+  },
+  "asha_assignment": {
+    "asha_id": "DEMO-ASHA-2",
+    "assigned_at": "2026-09-20T05:30:00+05:30",
+    "support_phase": "treatment_support",
+    "medicine_pickup_log": [
+      {
+        "scheduled_date": "2026-09-21",
+        "status": "scheduled",
+        "logged_at": null
+      }
+    ]
+  },
+  "followups": [
+    {
+      "date": "2026-09-20T06:00:00+05:30",
+      "kind": "treatment",
+      "source": "text",
+      "raw_transcript": null,
+      "summary": "Synthetic contact to discuss care navigation and medicine collection schedule.",
+      "trend": null
+    }
+  ],
+  "status_history": [
+    {
+      "from": null,
+      "to": "intake",
+      "at": "2026-09-20T02:00:00+05:30",
+      "actor_id": "demo-pharmacist-1",
+      "actor_role": "pharmacist"
+    },
+    {
+      "from": "intake",
+      "to": "ready_for_review",
+      "at": "2026-09-20T02:03:00+05:30",
+      "actor_id": "demo-pharmacist-1",
+      "actor_role": "pharmacist"
+    },
+    {
+      "from": "ready_for_review",
+      "to": "routed_for_diagnostics",
+      "at": "2026-09-20T02:16:00+05:30",
+      "actor_id": "demo-verifier-1",
+      "actor_role": "verifier"
+    },
+    {
+      "from": "routed_for_diagnostics",
+      "to": "diagnostic_result_available",
+      "at": "2026-09-20T05:00:00+05:30",
+      "actor_id": "demo-lab-1",
+      "actor_role": "lab"
+    },
+    {
+      "from": "diagnostic_result_available",
+      "to": "diagnosed",
+      "at": "2026-09-20T05:15:00+05:30",
+      "actor_id": "demo-clinician-1",
+      "actor_role": "clinician"
+    }
+  ]
+}
